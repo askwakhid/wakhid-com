@@ -1,0 +1,31 @@
+version: '3.9'
+networks:
+  docker-nginx_docker-nginx:
+    external: true
+
+services:
+  ghost:
+    image: ${GHOST_IMAGE}
+    container_name: ${GHOST_CONTAINER_NAME}
+    volumes:
+      - ./ghost-content:/var/lib/ghost/content
+    environment:
+      - url=${GHOST_URL}
+      - database__client=${GHOST_DB_CLIENT}
+      - database__connection__filename=${GHOST_DB_FILENAME}
+      - database__useNullAsDefault=${GHOST_DB_useNullAsDefault}
+      - database__debug=${GHOST_DB_DEBUG}
+      - storage__active=${GHOST_S3}
+      - storage__s3__accessKeyId=${GHOST_S3_ACCESSKEY}
+      - storage__s3__secretAccessKey=${GHOST_S3_SECRETKEY}
+      - storage__s3__bucket=${GHOST_S3_BUCKET}
+      - storage__s3__acl=${GHOST_S3_ACL}
+      - storage__s3__endpoint=${GHOST_S3_ENDPOINT}
+      - storage__s3__assetHost=${GHOST_S3_ASSETHOST}
+      - storage__s3__forcePathStyle=${GHOST_S3_FORCEPATHSTYLE}
+      - paths__contentPath=${GHOST_CONTENTPATH}
+    # ports:
+    #   - "2370:2368"
+    restart: always
+    networks:
+      - docker-nginx_docker-nginx
